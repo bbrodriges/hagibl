@@ -1,0 +1,11 @@
+{
+    "articlesonpage": "15",
+    "articles": [
+        {
+            "title": "First post",
+            "text": "<a href='http://github.com/bbrodriges/hagibl/'>Hagibl</a> is a new blog engine for any hosting. Hagibl is writen in JavaScript with JSON database file. :cut:Because of it all logic interpretes on client side and database can be transfered by simple copy-paste. But one complicated point is burried in engine's abbreviation. Hagible = <b>Ha</b>rdcore <b>Gi</b>thub <b>Bl</b>og, which means, that this engine is for hardcore internet users only.<p>For example, new post can be added by manual addition of new record directly into JSON database. All logic editing manually in <i>hagible.js</i> file, and all styling - in <i>hagible.css</i> file.</p><p>All suggestions and found bugs you can send to bender@rodriges.org, or into project's bugtracker on github.com</p>:/cut:",
+            "date": "27.11.2011",
+            "tags": [ "javascript", "json", "github", "blog", "nophp" ]
+        }
+    ]
+}
