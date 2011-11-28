@@ -4,10 +4,15 @@
 			return subject.split(search).join(replace);
 		}
 
-		function parse_text( articleText ) {
+		function parse_text( articleText, exclude_cut ) {
 			/* PARSING TEXT FOR SPECIAL TAGS */
-			articleText = str_replace( ':cut:' , '<a class="show-cut">expand...</a><div class="cut">', articleText );
-			articleText = str_replace( ':/cut:' , '</div>', articleText );
+			var opencut = '<a class="show-cut">expand...</a><div class="cut">';
+			var closecut = '</div>';
+			if( exclude_cut ) {
+				opencut = '<div class="uncut">';
+			}
+			articleText = str_replace( ':cut:' , opencut, articleText );
+			articleText = str_replace( ':/cut:' , closecut, articleText );
 			return articleText;
 		}
 
@@ -32,7 +37,7 @@
 						$.each( article.tags , function( id, tag ) {
 							blogArticles = blogArticles + ' <a href="javascript:" data-tag="' + tag + '" class="tag">' + tag + '</a>';
 						});
-						var articleText = parse_text( article.text ); 
+						var articleText = parse_text( article.text, false ); 
 						blogArticles = blogArticles + '</span><div class="text">' + articleText + '</div></div>';
 					} else {
 						return false;
@@ -53,7 +58,7 @@
 						$.each( article.tags , function( id, tag ) {
 							tagArticles = tagArticles + ' <a href="javascript:" data-tag="' + tag + '" class="tag">' + tag + '</a>';
 						});
-						var articleText = parse_text( article.text ); 
+						var articleText = parse_text( article.text, false ); 
 						tagArticles = tagArticles + '</span><div class="text">' + articleText + '</div></div>';
 				}
 			});
@@ -72,7 +77,7 @@
 						$.each( article.tags , function( id, tag ) {
 							Article = Article + ' <a href="javascript:" data-tag="' + tag + '" class="tag">' + tag + '</a>';
 						});
-						var articleText = parse_text( article.text ); 
+						var articleText = parse_text( article.text, true ); 
 						Article = Article + '</span><div class="text">' + articleText + '</div></div>';
 					return false;
 				}

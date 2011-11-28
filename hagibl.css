@@ -95,6 +95,10 @@
 				margin-top: 12px;
 				display: none;
 			}
+			
+			#articles .article .text .uncut {
+				margin-top: 12px;
+			}
 
 			#articles .article .text a.show-cut {
 				cursor: pointer;
