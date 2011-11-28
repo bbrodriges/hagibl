@@ -10,13 +10,21 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
 	<script type="text/javascript" src="http://crypto-js.googlecode.com/files/2.3.0-crypto-sha1.js"></script>
+	<script src="https://raw.github.com/christianv/jquery-lifestream/master/jquery.lifestream.min.js"></script>
 	<script src="hagibl.js"></script>
 
 </head>
 <body>
-	<div id="content">
+	<div id="holder">
 		<div id="title"><a href="/"><h1>Blog title</h1></a><span>And it's subtitle</span></div>
-		<div id="articles"></div>
+		<div id="content">
+			<div id="articles"></div>
+		</div>
+		<div id="lifestream">
+			<h1>Social lifestream</h1>
+			<div id="stream"></div>
+		</div>
+		<div style="clear:both"></div>
 	</div>
 	<div id="footer">
 		<p><span class="author">my own blog, 2011.</span></p>

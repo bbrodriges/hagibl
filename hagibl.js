@@ -111,5 +111,15 @@
 					window.location.search = 'article=' + $(this).data('link');
 				}
 			});
-
+			
+			/* MANAGING SOCIAL LIVESTREAM */
+			$("#stream").lifestream({
+				list:[
+				  {
+					service: "github",
+					user: "bbrodriges"
+				  }
+				]
+				/* More info about lifestream and available services at https://github.com/christianv/jquery-lifestream/ */
+			});
 		});
