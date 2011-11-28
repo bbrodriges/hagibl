@@ -24,6 +24,10 @@
 			}
 			return false;
 		}
+		
+		function createErrorPage( message ) {
+			$( '#articles' ).html( message );
+		}
 
 		function getFirstPage() {
 			/* DISPLAYING FIRST PAGE */
@@ -62,7 +66,12 @@
 						tagArticles = tagArticles + '</span><div class="text">' + articleText + '</div></div>';
 				}
 			});
-			$( '#articles' ).html( tagArticles );
+			if( tagArticles == '' ) {
+				message = '<div class="article"><h1 class="title">No posts with this tag found</h1><div class="text">You can try to search on <a href="/">front page</a>.</div></div>';
+				createErrorPage( message );
+			} else {
+				$( '#articles' ).html( tagArticles );
+			}
 		}
 
 		function getArticleById( articlehash ) {
@@ -82,7 +91,12 @@
 					return false;
 				}
 			});
-			$( '#articles' ).html( Article );
+			if( Article == '' ) {
+				message = '<div class="article"><h1 class="title">Post has not been fount</h1><div class="text">You can try to search on <a href="/">front page</a>.</div></div>';
+				createErrorPage( message );
+			} else {
+				$( '#articles' ).html( Article );
+			}
 		}
 
 		$( document ).ready(function(){
