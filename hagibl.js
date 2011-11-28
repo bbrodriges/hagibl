@@ -104,8 +104,10 @@
 
 			/* EXPANDING CUTTED TEXT IN ARTICLE */
 			$( 'a.show-cut' ).live('click', function(){
+				$( 'div.cut' ).hide('medium');
+				$( 'a.show-cut' ).show('medium');
 				$(this).next( 'div.cut' ).show('medium');
-				$(this).remove();
+				$(this).hide();
 			});
 
 			/* FILTERING ARTICLES BY TAG */
