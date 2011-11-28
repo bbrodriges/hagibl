@@ -50,7 +50,7 @@
 			/* RETURNING ALL ARTICLES WITH SPECIFIC TAG */
 			var tagArticles = '';
 			$.each( Database.articles , function( id , article ) {
-				if( array_search( article.tags , tag ) ) {
+				if( array_search( article.tags , decodeURI( tag ) ) ) {
 					tagArticles = tagArticles +
 						'<div class="article" id="' + id + '">' +
 							'<h1 class="title">' + article.title + '</h1>' +
