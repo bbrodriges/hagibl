@@ -79,6 +79,7 @@
 			var Article = '';
 			$.each( Database.articles , function( id , article ) {
 				if( Crypto.SHA1( article.title ) == articlehash ) {
+					$( 'title' ).text( $( 'title' ).text() + ' / ' + article.title );
 					Article = Article +
 						'<div class="article" id="' + id + '">' +
 							'<h1 class="title">' + article.title + '</h1>' +
