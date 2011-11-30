@@ -1,4 +1,25 @@
 		var Database = null; //Empty DB
+		
+		/* READING DB STARTED */
+		function readDB() { 
+			$.getJSON( 'db.json' , function( db ) {
+				Database = db;
+				if( window.location.search == '' ) {
+					getFirstPage();
+				} else {
+					var hash = window.location.search.split('=');
+					if( hash[0] == '?tag' ) {
+						getArticlesByTag( hash[1] );
+					} else if( hash[0] == '?article' ){
+						getArticleById( hash[1] );
+					}
+				}
+			});
+			if( Database != null ) {
+				return true;
+			}
+			return false;
+		}
 
 		function str_replace(search, replace, subject) {
 			return subject.split(search).join(replace);
@@ -100,22 +121,13 @@
 			}
 		}
 
+		/* PAGE LOADED, DOING MAGIC, CASTING SPELLS */
 		$( document ).ready(function(){
 
-			/* GETTING STARTED */
-			$.getJSON( 'db.json' , function( db ) {
-				Database = db;
-				if( window.location.search == '' ) {
-					getFirstPage();
-				} else {
-					var hash = window.location.search.split('=');
-					if( hash[0] == '?tag' ) {
-						getArticlesByTag( hash[1] );
-					} else if( hash[0] == '?article' ){
-						getArticleById( hash[1] );
-					}
-				}
-			});
+			if( !readDB() ) {
+				message = '<div class="article"><h1 class="title">Database broken</h1><div class="text">Something wrong with your JSON database. You can validate database at <a href="http://jsonlint.com">JSONlint</a>.</div></div>';
+				createErrorPage( message );
+			}
 
 			/* EXPANDING CUTTED TEXT IN ARTICLE */
 			$( 'a.show-cut' ).live('click', function(){
