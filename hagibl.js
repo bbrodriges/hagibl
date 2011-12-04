@@ -37,12 +37,13 @@ function getArticles() { /* RETURN PAGE BY GIVEN TYPE AND ID */
 		window.location.hash = '#!/';
 		$.each( Database.articles , function( id , article ) {
 			if( id < Database.articlesonpage ) {
+				var postlink = Crypto.SHA1( article.title );
 				Articles = Articles +
 					'<div class="article" id="' + id + '">' +
 					'<h1 class="title">' + article.title + '</h1>' +
-					'<span class="date">Posted on <a href="#!/article/' + Crypto.SHA1( article.title ) + '" data-link="' + Crypto.SHA1( article.title ) + '" class="link">' + article.date + '</a>, with tags: ';
+					'<span class="date">Posted on <a href="#!/post/' + postlink + '" data-content="' + postlink + '" class="post">' + article.date + '</a>, with tags: ';
 							$.each( article.tags , function( id, tag ) {
-								Articles = Articles + ' <a href="#!/tag/' + tag + '" data-tag="' + tag + '" class="tag">' + tag + '</a>';
+								Articles = Articles + ' <a href="#!/tag/' + tag + '" data-content="' + tag + '" class="tag">' + tag + '</a>';
 							});
 				Articles = Articles + '</span><div class="text">' + parse_text( article.text, false ) + '</div></div>';
 			}
@@ -50,26 +51,27 @@ function getArticles() { /* RETURN PAGE BY GIVEN TYPE AND ID */
 	} else if( hash[1] == 'tag' ) { // if 'tag' in hash - building tag based posts search
 			$.each( Database.articles , function( id , article ) {
 				if( array_search( article.tags , decodeURI( hash[2] ) ) ) {
+					var postlink = Crypto.SHA1( article.title );
 					Articles = Articles +
 						'<div class="article" id="' + id + '">' +
 							'<h1 class="title">' + article.title + '</h1>' +
-							'<span class="date">Posted on <a href="javascript:" data-link="' + Crypto.SHA1( article.title ) + '" class="link">' + article.date + '</a>, with tags: ';
+							'<span class="date">Posted on <a href="#!/post/' + postlink + '" data-content="' + postlink + '" class="post">' + article.date + '</a>, with tags: ';
 						$.each( article.tags , function( id, tag ) {
-							Articles = Articles + ' <a href="javascript:" data-tag="' + tag + '" class="tag">' + tag + '</a>';
+							Articles = Articles + ' <a href="#!/tag/' + tag + '" data-content="' + tag + '" class="tag">' + tag + '</a>';
 						});
 					Articles = Articles + '</span><div class="text">' + parse_text( article.text, false ) + '</div></div>';
 				}
 			});
-	} else if( hash[1] == 'article' ) {
+	} else if( hash[1] == 'post' ) {
 		$.each( Database.articles , function( id , article ) {
 			if( Crypto.SHA1( article.title ) == hash[2] ) {
 				$( 'title' ).text( $( 'title' ).text() + ' / ' + article.title );
 				Articles = Articles +
 					'<div class="article" id="' + id + '">' +
 						'<h1 class="title">' + article.title + '</h1>' +
-						'<span class="date">Posted on <a href="javascript:" data-link="' + hash[2] + '" class="link">' + article.date + '</a>, with tags: ';
+						'<span class="date">Posted on <a href="#!/post/' + hash[2] + '" data-content="' + hash[2] + '" class="post">' + article.date + '</a>, with tags: ';
 					$.each( article.tags , function( id, tag ) {
-						Articles = Articles + ' <a href="javascript:" data-tag="' + tag + '" class="tag">' + tag + '</a>';
+						Articles = Articles + ' <a href="#!/tag/' + tag + '" data-content="' + tag + '" class="tag">' + tag + '</a>';
 					});
 					Articles = Articles + '</span><div class="text">' + parse_text( article.text, true ) + '</div></div>';
 				return false;
@@ -120,11 +122,7 @@ $( document ).ready(function() { /* WAITING PAGE TO BE LOADED TO DISPLAY ARTICLE
 	});
 
 	$( '.date a' ).live('click', function(){
-		if( $(this).hasClass('tag') ) {
-			window.location.hash = '#!/tag/' + $(this).data('tag');
-		} else if( $(this).hasClass('link') ) {
-			window.location.hash = '#!/article/' + $(this).data('link');
-		}
+		window.location.hash = '#!/'+ $(this).attr('class') +'/' + $(this).data('content');
 		getArticles();
 	});
 
