@@ -1,6 +1,7 @@
 /* GLOBAL VARIABLES */
 
 var Database = null; //Empty DB
+var BlogTitle = null;
 
 /* ------------------------------------------------------- */
 
@@ -34,6 +35,7 @@ function getArticles() { /* RETURN PAGE BY GIVEN TYPE AND ID */
 	var hash = window.location.hash.split('/');
 	var Articles = '';
 	if( hash[1] == '' || window.location.hash == '' ) { // if no hash - main page
+		$( 'title' ).text( BlogTitle );
 		window.location.hash = '#!/';
 		$.each( Database.articles , function( id , article ) {
 			if( id < Database.articlesonpage ) {
@@ -49,22 +51,24 @@ function getArticles() { /* RETURN PAGE BY GIVEN TYPE AND ID */
 			}
 		});
 	} else if( hash[1] == 'tag' ) { // if 'tag' in hash - building tag based posts search
-			$.each( Database.articles , function( id , article ) {
-				if( array_search( article.tags , decodeURI( hash[2] ) ) ) {
-					var postlink = Crypto.SHA1( article.title );
-					Articles = Articles +
-						'<div class="article" id="' + id + '">' +
-							'<h1 class="title">' + article.title + '</h1>' +
-							'<span class="date">Posted on <a href="#!/post/' + postlink + '" data-content="' + postlink + '" class="post">' + article.date + '</a>, with tags: ';
-						$.each( article.tags , function( id, tag ) {
-							Articles = Articles + ' <a href="#!/tag/' + tag + '" data-content="' + tag + '" class="tag">' + tag + '</a>';
-						});
-					Articles = Articles + '</span><div class="text">' + parse_text( article.text, false ) + '</div></div>';
-				}
-			});
-	} else if( hash[1] == 'post' ) {
+		$( 'title' ).text( BlogTitle );
+		$.each( Database.articles , function( id , article ) {
+			if( array_search( article.tags , decodeURI( hash[2] ) ) ) {
+				var postlink = Crypto.SHA1( article.title );
+				Articles = Articles +
+					'<div class="article" id="' + id + '">' +
+						'<h1 class="title">' + article.title + '</h1>' +
+						'<span class="date">Posted on <a href="#!/post/' + postlink + '" data-content="' + postlink + '" class="post">' + article.date + '</a>, with tags: ';
+					$.each( article.tags , function( id, tag ) {
+						Articles = Articles + ' <a href="#!/tag/' + tag + '" data-content="' + tag + '" class="tag">' + tag + '</a>';
+					});
+				Articles = Articles + '</span><div class="text">' + parse_text( article.text, false ) + '</div></div>';
+			}
+		});
+	} else if( hash[1] == 'post' ) { // if 'post' in hash - building id based post page
 		$.each( Database.articles , function( id , article ) {
 			if( Crypto.SHA1( article.title ) == hash[2] ) {
+				BlogTitle = $( 'title' ).text();
 				$( 'title' ).text( $( 'title' ).text() + ' / ' + article.title );
 				Articles = Articles +
 					'<div class="article" id="' + id + '">' +
@@ -80,7 +84,7 @@ function getArticles() { /* RETURN PAGE BY GIVEN TYPE AND ID */
 	}
 
 	if( Articles == '' ) {
-			Articles = '<div class="article"><h1 class="title">Error</h1><div class="text">Something went wrong. Either no posts found or database error. Try to search on <a href="/">front page</a>.</div></div>';
+			Articles = '<div class="article"><h1 class="title">Error</h1><div class="text">Something went wrong. Either no posts found or database error. Try to search on <a href="#!/" class="mainpage">front page</a>.</div></div>';
 	}
 
 	$( '#articles' ).html( Articles );
@@ -126,7 +130,7 @@ $( document ).ready(function() { /* WAITING PAGE TO BE LOADED TO DISPLAY ARTICLE
 		getArticles();
 	});
 
-	$( '#title a' ).live('click', function(){
+	$( '#title a, .mainpage' ).live('click', function(){
 		window.location.hash = '#!/';
 		getArticles();
 	});
