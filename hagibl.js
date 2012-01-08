@@ -2,6 +2,7 @@
 
 var Database = null; //Empty DB
 var BlogTitle = null;
+var pageNumber = 1;
 
 /* ------------------------------------------------------- */
 
@@ -34,11 +35,16 @@ function array_search( haystack, needle ) { /* FIND POST IN DATABASE */
 function getArticles() { /* RETURN PAGE BY GIVEN TYPE AND ID */
 	var hash = window.location.hash.split('/');
 	var Articles = '';
-	if( hash[1] == '' || window.location.hash == '' ) { // if no hash - main page
+	if( hash[1] == '' || window.location.hash == '' || hash[1] == 'page' ) { // if no hash - main page
 		$( 'title' ).text( BlogTitle );
-		window.location.hash = '#!/';
+		var pageNumber = hash[2];
+		if( !parseInt( pageNumber ) || pageNumber < 1 ) {
+			window.location.hash = '#!/';
+			pageNumber = 1;
+		}
+		var postsCount = Database.articles.length;
 		$.each( Database.articles , function( id , article ) {
-			if( id < Database.articlesonpage ) {
+			if( id >= ( Database.articlesonpage * pageNumber - Database.articlesonpage ) && id < ( Database.articlesonpage * pageNumber ) ) {
 				var postlink = Crypto.SHA1( article.title );
 				Articles = Articles +
 					'<div class="article" id="' + id + '">' +
@@ -82,11 +88,19 @@ function getArticles() { /* RETURN PAGE BY GIVEN TYPE AND ID */
 			}
 		});
 	}
-
 	if( Articles == '' ) {
-			Articles = '<div class="article"><h1 class="title">Error</h1><div class="text">Something went wrong. Either no posts found or database error. Try to search on <a href="#!/" class="mainpage">front page</a>.</div></div>';
+		Articles = '<div class="article"><h1 class="title">Error</h1><div class="text">Something went wrong. Either no posts found or database error. Try to search on <a href="#!/" class="mainpage">front page</a>.</div></div>';
+	} else {
+		$( '#pagination p' ).css({ visibility: 'hidden' });
+		if( postsCount && postsCount > Database.articlesonpage ) {
+			if( pageNumber > 1 ) {
+				$( '#pagination p.next' ).css({ visibility: 'visible' });
+			}
+			if( pageNumber < Math.ceil( postsCount / Database.articlesonpage ) ) {
+				$( '#pagination p.prev' ).css({ visibility: 'visible' });
+			}
+		}
 	}
-
 	$( '#articles' ).html( Articles );
 }
 
@@ -132,6 +146,16 @@ $( document ).ready(function() { /* WAITING PAGE TO BE LOADED TO DISPLAY ARTICLE
 
 	$( '#title a, .mainpage' ).live('click', function(){
 		window.location.hash = '#!/';
+		getArticles();
+	});
+
+	$(' #pagination .next').click(function(){
+		window.location.hash = '#!/page/' + ( pageNumber - 1 );
+		getArticles();
+	});
+
+	$(' #pagination .prev').click(function(){
+		window.location.hash = '#!/page/' + ( pageNumber + 1 );
 		getArticles();
 	});
 

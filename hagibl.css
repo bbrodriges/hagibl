@@ -103,6 +103,23 @@
 				text-decoration: underline;
 			}
 
+
+			#pagination p {
+				float: left;
+				width: 50%;
+				font-size: 0.8em;
+				visibility: hidden;
+			}
+
+				#pagination p a {
+					cursor: pointer;
+					text-decoration: underline;
+				}
+
+			#pagination p.prev {
+				text-align: right;
+			}
+
 		#footer {
 			background: #555;
 			color: #fff;
