@@ -37,8 +37,8 @@ function getArticles() { /* RETURN PAGE BY GIVEN TYPE AND ID */
 	var Articles = '';
 	if( hash[1] == '' || window.location.hash == '' || hash[1] == 'page' ) { // if no hash - main page
 		$( 'title' ).text( BlogTitle );
-		var pageNumber = hash[2];
-		if( !parseInt( pageNumber ) || pageNumber < 1 ) {
+		pageNumber = parseInt( hash[2] );
+		if( pageNumber < 1 ) {
 			window.location.hash = '#!/';
 			pageNumber = 1;
 		}
@@ -149,12 +149,12 @@ $( document ).ready(function() { /* WAITING PAGE TO BE LOADED TO DISPLAY ARTICLE
 		getArticles();
 	});
 
-	$(' #pagination .next').click(function(){
+	$( '#pagination .next' ).click(function(){
 		window.location.hash = '#!/page/' + ( pageNumber - 1 );
 		getArticles();
 	});
 
-	$(' #pagination .prev').click(function(){
+	$( '#pagination .prev' ).click(function(){
 		window.location.hash = '#!/page/' + ( pageNumber + 1 );
 		getArticles();
 	});
