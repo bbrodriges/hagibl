@@ -37,11 +37,17 @@ function getArticles() { /* RETURN PAGE BY GIVEN TYPE AND ID */
 	var Articles = '';
 	if( hash[1] == '' || window.location.hash == '' || hash[1] == 'page' ) { // if no hash - main page
 		$( 'title' ).text( BlogTitle );
-		pageNumber = parseInt( hash[2] );
-		if( pageNumber < 1 ) {
-			window.location.hash = '#!/';
+
+		if( hash[2] ){
+			pageNumber = parseInt( hash[2] );
+		} else {
 			pageNumber = 1;
 		}
+
+		if( pageNumber < 1 ) {
+			window.location.hash = '#!/';
+		}
+
 		var postsCount = Database.articles.length;
 		$.each( Database.articles , function( id , article ) {
 			if( id >= ( Database.articlesonpage * pageNumber - Database.articlesonpage ) && id < ( Database.articlesonpage * pageNumber ) ) {
