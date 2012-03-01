@@ -103,6 +103,17 @@
 				text-decoration: underline;
 			}
 
+			#articles .article .text:first-letter {
+				font-size: 43px;
+				font-weight: normal;
+				line-height: 32px;
+				letter-spacing: 5px;
+				float: left;
+				padding: 5px 0 0 0;
+				width: auto;
+				font-family: 'Lobster', cursive;
+			}
+
 
 			#pagination p {
 				float: left;
